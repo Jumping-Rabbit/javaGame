@@ -10,6 +10,7 @@ module com.example.javagame {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.management;
 
     opens com.example.javagame to javafx.fxml;
     exports com.example.javagame;
