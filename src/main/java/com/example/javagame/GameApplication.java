@@ -59,7 +59,7 @@ public class GameApplication extends Application {
                         }
                     }
                     double fps = frames.size() / 2;
-                    System.out.println(fps);
+//                    System.out.println(fps);
                     graphics_context.clearRect(0, 0, 1280 * canvasScale, 720 * canvasScale);
                     graphics_context.setFill(Color.WHITE);
                     graphics_context.fillRect(0, 0, 1280 * canvasScale, 720 * canvasScale);
