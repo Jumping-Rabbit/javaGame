@@ -11,6 +11,7 @@ module com.example.javagame {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.management;
+    requires annotations;
 
     opens com.example.javagame to javafx.fxml;
     exports com.example.javagame;

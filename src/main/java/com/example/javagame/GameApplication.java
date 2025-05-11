@@ -1,30 +1,23 @@
 package com.example.javagame;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.canvas.*;
-import javafx.scene.paint.Color;
-import javafx.scene.Group;
-import java.io.IOException;
-import javafx.scene.*;
-import javafx.stage.StageStyle;
 
-import java.lang.management.ManagementFactory;
-import java.util.*;
-import static com.example.javagame.GameConfig.*;
-import static java.lang.Thread.sleep;
+import java.io.IOException;
+import java.time.Instant;
 
 
 public class GameApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException{
+    public void start(Stage stage) {
         double widthScale = (Screen.getPrimary().getBounds().getWidth() * Screen.getPrimary().getOutputScaleX()) / 1280;
         double heightScale = (Screen.getPrimary().getBounds().getHeight() * Screen.getPrimary().getOutputScaleY()) / 720;
         double canvasScale = Math.min(widthScale, heightScale);
@@ -40,26 +33,24 @@ public class GameApplication extends Application {
         stage.setWidth(screenBounds.getWidth());
         stage.setHeight(screenBounds.getHeight());
         stage.setScene(scene);
-//        stage.initStyle(StageStyle.TRANSPARENT);
-//        stage.setResizable(false);
         stage.setMaximized(true);
         stage.show();
         stage.setTitle("java game");
-        List<Long> frames = new ArrayList<>();
         Platform.runLater(() -> {
             new Thread(() -> {
+                long frameCountStartTime = Instant.now().toEpochMilli();
+                int frameCount = 0;
+                long fps = 0;
                 while (true) {
-                    long frameStartTime = ManagementFactory.getRuntimeMXBean().getUptime();
-                    frames.add(frameStartTime);
-
-                    long lowMs = frames.getFirst();
-                    for (int i = 0; i < frames.size(); i++) {
-                        if (frameStartTime - frames.get(i) > 2000) {
-                            frames.remove(i);
-                        }
+                    frameCount ++;
+                    long currentFrameTime = Instant.now().toEpochMilli();
+                    long timePassed = currentFrameTime - frameCountStartTime;
+                    if (timePassed > 2000) {
+                        fps = frameCount * 1000L / timePassed;
+                        System.out.println(fps);
+                        frameCount = 0;
+                        frameCountStartTime = currentFrameTime;
                     }
-                    double fps = frames.size() / 2;
-//                    System.out.println(fps);
                     graphics_context.clearRect(0, 0, 1280 * canvasScale, 720 * canvasScale);
                     graphics_context.setFill(Color.WHITE);
                     graphics_context.fillRect(0, 0, 1280 * canvasScale, 720 * canvasScale);
